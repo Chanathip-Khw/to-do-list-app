@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import TaskName from "../components/create/TaskName.vue";
 import CategorySelector from "../components/create/CategorySelector.vue";
 import DateSelector from "../components/create/DateSelector.vue";

@@ -2,7 +2,7 @@
   <div class="input-container">
     <slot name="input-slot">
       <input
-        v-bind="$attr"
+        v-bind="$attrs"
         :type="type"
         :value="modelValue"
         @input="updateValue($event)"
@@ -13,7 +13,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, emit } from "vue";
+import { defineComponent } from "vue";
+import type { PropType } from 'vue';
 
 export default defineComponent({
   name: "CustomInput",
@@ -32,7 +33,7 @@ export default defineComponent({
     },
   },
   emits: ["update:modelValue"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const updateValue = (event: Event) => {
       const value = (event.target as HTMLInputElement).value
       emit('update:modelValue', value)

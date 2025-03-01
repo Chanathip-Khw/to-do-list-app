@@ -15,22 +15,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
   name: "PrioritySelector",
   props: {
     priorities: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
     selectedPriority: {
-      type: String,
+      type: String as PropType<string | null>,
       default: null,
     },
   },
   emits: ["update:selectedPriority"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const handleSelectPriority = (priority: string) => {
       emit("update:selectedPriority", priority);
     };

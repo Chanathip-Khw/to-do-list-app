@@ -6,10 +6,7 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     rollupOptions: {
-      input: {
-        home: "./public/home.html",
-        login: "./public/login.html",
-      },
+      input: "index.html",
     },
   },
 });

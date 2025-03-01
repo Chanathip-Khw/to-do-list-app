@@ -13,7 +13,7 @@
       <CategoryCard
         v-for="(count, category) in categoryCounts"
         :key="category"
-        :category="category"
+        :category="category.toString()"
         :count="count"
       />
     </section>

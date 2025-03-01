@@ -3,11 +3,7 @@
     <label :for="id">{{ label }}</label>
     <div class="input-wrapper">
       <input :id="id" :type="type" :value="modelValue" @input="updateValue" />
-      <img
-        src="../assets/images/edit.svg"
-        class="input-icon"
-        alt="icon"
-      />
+      <img src="../assets/images/edit.svg" class="input-icon" alt="icon" />
     </div>
   </div>
 </template>
@@ -15,7 +11,7 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits } from "vue";
 
-const props = defineProps<{
+const { modelValue, label, type, id } = defineProps<{
   modelValue: string;
   label: string;
   type: string;

@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, } from "vue";
 import dailytasksImg from "../assets/images/tasks/dailytasks.svg";
 import workImg from "../assets/images/tasks/work.svg";
 import learningImg from "../assets/images/tasks/learning.svg";

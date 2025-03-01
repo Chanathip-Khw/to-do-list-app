@@ -5,14 +5,14 @@
       id="task-name"
       type="text"
       placeholder="Enter task name"
-      v-model="taskName"
+      v-model="modelValue"
       @input="updateTaskName"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "TaskName",
@@ -22,7 +22,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const updateTaskName = (event: Event) => {
       const input = event.target as HTMLInputElement;
       emit("update:modelValue", input.value);

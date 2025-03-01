@@ -13,14 +13,14 @@
       />
       <CustomInputAuthen
         placeholder="password"
-        type="text"
+        type="password"
         v-model="password"
       />
       <button class="login" @click="handleLogin">Login</button>
       <button class="google-signin">
-        <img :src="google" alt="Google"/>
+        <img :src="google" alt="Google" />
         <div>Sign in with Google</div>
-        </button>
+      </button>
       <div class="signup">
         <div>Don't have any account?</div>
         <a href="/signup">Sign Up</a>
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import logo from "../assets/images/logo.svg";
 import CustomInputAuthen from "../components/CustomInputAuthen.vue";
 import google from "../assets/images/google.svg";
