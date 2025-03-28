@@ -1,8 +1,8 @@
 <template>
-  <div :class="['category-card', categoryClass]">
+  <div :class="['category-card', categoryData.class]">
     <div class="image-container">
       <div class="circle">
-        <img :src="categoryImage" alt="category image" class="category-image" />
+        <img :src="categoryData.image" alt="category image" class="category-image" />
       </div>
     </div>
     <div class="text-container">
@@ -12,51 +12,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 import dailytasksImg from "../assets/images/tasks/dailytasks.svg";
 import workImg from "../assets/images/tasks/work.svg";
 import learningImg from "../assets/images/tasks/learning.svg";
 import groceriesImg from "../assets/images/tasks/groceries.svg";
 
-export default defineComponent({
-  props: {
-    category: { type: String, required: true },
-    count: { type: Number, required: true },
-  },
-  computed: {
-    categoryClass(): string {
-      return this.category.toLowerCase().replace(" ", "-");
-    },
-    categoryImage(): string {
-      switch (this.category.toLowerCase()) {
-        case "dailytasks":
-          return dailytasksImg;
-        case "work":
-          return workImg;
-        case "learning":
-          return learningImg;
-        case "groceries":
-          return groceriesImg;
-        default:
-          return "";
-      }
-    },
-  },
-  categoryImage(): string {
-    switch (this.category.toLowerCase()) {
-      case "dailytasks":
-        return dailytasksImg;
-      case "work":
-        return workImg;
-      case "learning":
-        return learningImg;
-      case "groceries":
-        return groceriesImg;
-      default:
-        return "";
-    }
-  },
+// Props
+const props = defineProps<{
+  category: string;
+  count: number;
+}>();
+
+// Computed property for category data
+const categoryData = computed(() => {
+  const categoryMap: Record<string, { class: string; image: string }> = {
+    dailytasks: { class: "dailytasks", image: dailytasksImg },
+    work: { class: "work", image: workImg },
+    learning: { class: "learning", image: learningImg },
+    groceries: { class: "groceries", image: groceriesImg },
+  };
+
+  // Normalize category string
+  const key = props.category.toLowerCase();
+  return categoryMap[key] || { class: "default", image: "" };
 });
 </script>
 
@@ -110,5 +90,9 @@ export default defineComponent({
 
 .category-card.groceries {
   background-color: rgba(237, 190, 125, 0.6);
+}
+
+.category-card.default {
+  background-color: #f0f0f0;
 }
 </style>

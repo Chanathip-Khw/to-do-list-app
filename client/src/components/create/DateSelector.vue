@@ -9,6 +9,7 @@
       placeholder="Select a date"
       readonly
       @click="openDatePicker"
+      aria-label="Select a date"
     />
 
     <input
@@ -17,58 +18,60 @@
       v-model="selectedDate"
       @input="updateDate"
       style="display: none"
+      aria-hidden="true"
     />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+<script setup lang="ts">
+import { ref, computed, defineProps, defineEmits } from "vue";
 
-export default defineComponent({
-  name: "DateSelector",
-  props: {
-    modelValue: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props, { emit }) {
-    const selectedDate = ref(props.modelValue);
-    const dateInput = ref<HTMLInputElement | null>(null);
-
-    const formattedDate = computed(() => {
-      if (!selectedDate.value) return "";
-      const date = new Date(selectedDate.value);
-      return new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "long",
-        weekday: "long",
-      }).format(date);
-    });
-
-    const openDatePicker = () => {
-      dateInput.value?.showPicker();
-    };
-
-    const updateDate = (event: Event) => {
-      selectedDate.value = (event.target as HTMLInputElement).value;
-      emit("update:modelValue", selectedDate.value);
-    };
-
-    return {
-      selectedDate,
-      formattedDate,
-      updateDate,
-      openDatePicker,
-      dateInput,
-    };
+// Define props with types
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true,
   },
 });
+
+// Define emits
+const emit = defineEmits<{
+  (event: "update:modelValue", value: string): void;
+}>();
+
+// Reactive state for selected date
+const selectedDate = ref(props.modelValue);
+
+// Computed property to format date
+const formattedDate = computed(() => {
+  if (!selectedDate.value) return "";
+  const date = new Date(selectedDate.value);
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "long",
+    weekday: "long",
+  }).format(date);
+});
+
+// Ref for the date input element
+const dateInput = ref<HTMLInputElement | null>(null);
+
+// Open the native date picker
+const openDatePicker = () => {
+  dateInput.value?.showPicker();
+};
+
+// Update the date value when changed
+const updateDate = (event: Event) => {
+  const newDate = (event.target as HTMLInputElement).value;
+  selectedDate.value = newDate;
+  emit("update:modelValue", newDate);  // Emit the updated date to parent
+};
 </script>
 
 <style scoped>
 .date-selector {
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -77,9 +80,6 @@ export default defineComponent({
 .date-selector label {
   font-size: 14px;
   font-weight: 700;
-}
-
-label {
   text-align: left;
 }
 
@@ -90,5 +90,9 @@ input {
   cursor: pointer;
   font-size: 12px;
   font-family: Inter, sans-serif;
+}
+
+input[readonly] {
+  background-color: #f9f9f9;
 }
 </style>

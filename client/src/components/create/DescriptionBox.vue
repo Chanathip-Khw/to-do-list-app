@@ -6,40 +6,41 @@
       v-model="description"
       placeholder="Enter task description"
       @input="updateDescription"
+      aria-label="Enter task description"
     ></textarea>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { ref, defineProps, defineEmits } from "vue";
 
-export default defineComponent({
-  name: "DescriptionBox",
-  props: {
-    modelValue: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props, { emit }) {
-    const description = ref(props.modelValue);
-
-    const updateDescription = (event: Event) => {
-      description.value = (event.target as HTMLTextAreaElement).value;
-      emit("update:modelValue", description.value);
-    };
-
-    return {
-      description,
-      updateDescription,
-    };
+// Define props with types
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true,
   },
 });
+
+// Define emits
+const emit = defineEmits<{
+  (event: "update:modelValue", value: string): void;
+}>();
+
+// Reactive state for description
+const description = ref(props.modelValue);
+
+// Update description value when changed
+const updateDescription = (event: Event) => {
+  const newDescription = (event.target as HTMLTextAreaElement).value;
+  description.value = newDescription;
+  emit("update:modelValue", newDescription);  // Emit the updated description to parent
+};
 </script>
 
 <style scoped>
 .description-box {
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -48,15 +49,21 @@ export default defineComponent({
 .description-box label {
   font-size: 14px;
   font-weight: 700;
+  text-align: left;
 }
 
 textarea {
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   border: 1px solid grey;
   border-radius: 8px;
   padding: 8px 15px;
   font-size: 12px;
   resize: vertical;
   min-height: 100px;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: #9747ff;
 }
 </style>

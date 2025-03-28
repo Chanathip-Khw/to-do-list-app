@@ -5,49 +5,38 @@
         v-bind="$attrs"
         :type="type"
         :value="modelValue"
-        @input="updateValue($event)"
+        @input="updateValue"
         :placeholder="placeholder"
       />
     </slot>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import type { PropType } from 'vue';
+<script lang="ts" setup>
+import { defineProps, defineEmits } from "vue";
 
-export default defineComponent({
-  name: "CustomInput",
-  props: {
-    modelValue: {
-      type: [String, Number] as PropType<string | number>,
-      required: true,
-    },
-    type: {
-      type: String as PropType<string>,
-      default: "text",
-    },
-    placeholder: {
-      type: String as PropType<string>,
-      default: "",
-    },
-  },
-  emits: ["update:modelValue"],
-  setup(_, { emit }) {
-    const updateValue = (event: Event) => {
-      const value = (event.target as HTMLInputElement).value
-      emit('update:modelValue', value)
-    }
+// Props
+defineProps<{
+  modelValue: string | number;
+  type?: string;
+  placeholder?: string;
+}>();
 
-    return { updateValue }
-  },
-});
+// Emits
+const emit = defineEmits<{
+  (e: "update:modelValue", value: string | number): void;
+}>();
+
+// Update input value
+const updateValue = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value;
+  emit("update:modelValue", value);
+};
 </script>
 
 <style scoped>
 .input-container {
-width: 100%;
-
+  width: 100%;
 }
 
 input {

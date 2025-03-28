@@ -5,7 +5,7 @@
       <div>TodoHive</div>
     </header>
     <section class="signin">
-      <div class="welcome-back">Welcome Back !</div>
+      <div class="welcome-back">Welcome Back!</div>
       <CustomInputAuthen
         placeholder="username"
         type="text"
@@ -22,39 +22,33 @@
         <div>Sign in with Google</div>
       </button>
       <div class="signup">
-        <div>Don't have any account?</div>
+        <div>Don't have an account?</div>
         <a href="/signup">Sign Up</a>
       </div>
     </section>
     <footer>
-      Join our new beta program to test our new experimantal feature
+      Join our new beta program to test our new experimental features
     </footer>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue";
-import logo from "../assets/images/logo.svg";
-import CustomInputAuthen from "../components/CustomInputAuthen.vue";
-import google from "../assets/images/google.svg";
 import { useRouter } from "vue-router";
+import logo from "../assets/images/logo.svg";
+import google from "../assets/images/google.svg";
+import CustomInputAuthen from "../components/CustomInputAuthen.vue";
 
-export default {
-  components: { CustomInputAuthen },
-  name: "Login",
-  data() {
-    return { logo, google };
-  },
-  setup() {
-    const username = ref("");
-    const password = ref("");
+// State
+const username = ref("");
+const password = ref("");
 
-    const router = useRouter();
-    const handleLogin = () => {
-      router.push("/home");
-    };
-    return { username, password, handleLogin };
-  },
+// Router
+const router = useRouter();
+
+// Methods
+const handleLogin = () => {
+  router.push("/home");
 };
 </script>
 
@@ -105,6 +99,8 @@ section .login {
   color: white;
   font-size: 14px;
   height: 45px;
+  border: none;
+  cursor: pointer;
 }
 
 section .login:hover {
@@ -118,6 +114,7 @@ section .google-signin {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 section .google-signin img {

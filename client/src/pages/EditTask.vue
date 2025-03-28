@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import TaskName from "../components/create/TaskName.vue";
@@ -43,61 +43,46 @@ import TimeSelector from "../components/create/TimeSelector.vue";
 import PrioritySelector from "../components/create/PrioritySelector.vue";
 import DescriptionBox from "../components/create/DescriptionBox.vue";
 
-export default {
-  name: "EditTask",
-  components: {
-    TaskName,
-    CategorySelector,
-    DateSelector,
-    TimeSelector,
-    PrioritySelector,
-    DescriptionBox,
-  },
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const taskId = Number(route.params.id); 
+// Router and route
+const route = useRoute();
+const router = useRouter();
+const taskId = Number(route.params.id);
 
-    const task = ref({
+// Task state
+const task = ref({
+  id: taskId,
+  name: "",
+  category: "",
+  date: "",
+  startTime: "",
+  endTime: "",
+  priority: "",
+  description: "",
+});
+
+// Categories and priorities
+const categories = ref(["Dailytasks", "Work", "Learning", "Groceries"]);
+const priorities = ref(["Low", "Medium", "High"]);
+
+// Mock data loading
+onMounted(() => {
+  setTimeout(() => {
+    task.value = {
       id: taskId,
-      name: "",
-      category: "",
-      date: "",
-      startTime: "",
-      endTime: "",
-      priority: "",
-      description: "",
-    });
-
-    const categories = ref(["Dailytasks", "Work", "Learning", "Groceries"]);
-    const priorities = ref(["Low", "Medium", "High"]);
-
-    onMounted(() => {
-      setTimeout(() => {
-        task.value = {
-          id: taskId,
-          name: "Mock Task",
-          category: "Work",
-          date: "2025-02-18",
-          startTime: "09:00",
-          endTime: "10:00",
-          priority: "High",
-          description: "This is a mock task for editing.",
-        };
-      }, 500);
-    });
-
-    const saveChanges = () => {
-      router.push("/home");
+      name: "Mock Task",
+      category: "Work",
+      date: "2025-02-18",
+      startTime: "09:00",
+      endTime: "10:00",
+      priority: "High",
+      description: "This is a mock task for editing.",
     };
+  }, 500);
+});
 
-    return {
-      task,
-      categories,
-      priorities,
-      saveChanges,
-    };
-  },
+// Save changes
+const saveChanges = () => {
+  router.push("/home");
 };
 </script>
 

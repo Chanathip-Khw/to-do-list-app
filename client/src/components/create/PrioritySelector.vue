@@ -1,12 +1,14 @@
 <template>
   <div class="priority-selector">
-    <div style="text-align:left">Priority</div>
+    <div style="text-align: left">Priority</div>
     <div class="priority-button-container">
       <button
+        type="button"
         v-for="priority in priorities"
         :key="priority"
         :class="{ selected: selectedPriority === priority }"
         @click="handleSelectPriority(priority)"
+        :aria-label="'Select ' + priority + ' priority'"
       >
         {{ priority }}
       </button>
@@ -14,32 +16,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { ref, defineProps, defineEmits, PropType } from "vue";
 
-export default defineComponent({
-  name: "PrioritySelector",
-  props: {
-    priorities: {
-      type: Array as PropType<string[]>,
-      required: true,
-    },
-    selectedPriority: {
-      type: String as PropType<string | null>,
-      default: null,
-    },
+// Define props with types
+const props = defineProps({
+  priorities: {
+    type: Array as PropType<string[]>,
+    required: true,
   },
-  emits: ["update:selectedPriority"],
-  setup(_, { emit }) {
-    const handleSelectPriority = (priority: string) => {
-      emit("update:selectedPriority", priority);
-    };
-
-    return {
-      handleSelectPriority,
-    };
+  selectedPriority: {
+    type: String as PropType<string | null>,
+    default: null,
   },
 });
+
+// Define emits
+const emit = defineEmits<{
+  (event: "update:selectedPriority", value: string): void;
+}>();
+
+// Method to handle the selection of priority
+const handleSelectPriority = (priority: string) => {
+  emit("update:selectedPriority", priority);
+};
 </script>
 
 <style scoped>
@@ -64,11 +64,20 @@ export default defineComponent({
   font-size: 10px;
   font-weight: 700;
   padding: 10px 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
 }
 
 .priority-button-container button.selected {
   background-color: #9747ff;
   color: white;
   border: none;
+}
+
+.priority-button-container button:focus {
+  outline: none;
+  border: 2px solid #9747ff;
+  box-shadow: 0 0 5px rgba(151, 71, 255, 0.5);
 }
 </style>

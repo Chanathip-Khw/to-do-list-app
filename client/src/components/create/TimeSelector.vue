@@ -1,39 +1,29 @@
 <template>
   <div class="time-selector">
-    <label for="time">{{ label }}</label>
-    <input id="time" type="time" v-model="selectedTime" @input="updateTime" />
+    <label :for="id">{{ label }}</label>
+    <input
+      :id="id"
+      type="time"
+      :value="modelValue"
+      @input="(event) => emit('update:modelValue', event.target.value)"
+    />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { defineProps, defineEmits } from "vue";
 
-export default defineComponent({
-  name: "TimeSelector",
-  props: {
-    modelValue: {
-      type: String,
-      required: true,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props, { emit }) {
-    const selectedTime = ref(props.modelValue);
+// Define props
+const props = defineProps<{
+  modelValue: string;
+  label: string;
+  id: string;
+}>();
 
-    const updateTime = (event: Event) => {
-      selectedTime.value = (event.target as HTMLInputElement).value;
-      emit("update:modelValue", selectedTime.value);
-    };
-
-    return {
-      selectedTime,
-      updateTime,
-    };
-  },
-});
+// Define emits
+const emit = defineEmits<{
+  (event: "update:modelValue", value: string): void;
+}>();
 </script>
 
 <style scoped>
@@ -48,9 +38,6 @@ export default defineComponent({
 .time-selector label {
   font-size: 14px;
   font-weight: 700;
-}
-
-label {
   text-align: left;
 }
 
@@ -59,8 +46,14 @@ input {
   border-radius: 8px;
   padding: 8px 15px;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 500;
   font-family: Inter, sans-serif;
+  transition: border-color 0.2s ease-in-out;
+}
+
+input:focus {
+  border-color: #9747ff;
+  outline: none;
 }
 </style>

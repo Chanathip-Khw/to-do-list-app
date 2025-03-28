@@ -3,7 +3,7 @@
     <label :for="id">{{ label }}</label>
     <div class="input-wrapper">
       <input :id="id" :type="type" :value="modelValue" @input="updateValue" />
-      <img src="../assets/images/edit.svg" class="input-icon" alt="icon" />
+      <img src="../assets/images/edit.svg" class="input-icon" alt="Edit Icon" />
     </div>
   </div>
 </template>
@@ -11,17 +11,20 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits } from "vue";
 
-const { modelValue, label, type, id } = defineProps<{
+// Props
+defineProps<{
   modelValue: string;
   label: string;
   type: string;
   id: string;
 }>();
 
+// Emits
 const emit = defineEmits<{
   (e: "update:modelValue", value: string): void;
 }>();
 
+// Update input value
 const updateValue = (event: Event) => {
   const target = event.target as HTMLInputElement;
   emit("update:modelValue", target.value);
@@ -37,6 +40,9 @@ label {
   display: block;
   text-align: left;
   margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
 }
 
 .input-wrapper {
@@ -50,8 +56,14 @@ input {
   border-radius: 12px;
   width: 100%;
   color: #757575;
-  font-size: 12px;
-  padding: 20px 30px;
+  font-size: 14px;
+  padding: 12px 40px 12px 12px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #9747ff;
 }
 
 .input-icon {

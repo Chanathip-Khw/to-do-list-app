@@ -2,11 +2,11 @@
   <div class="profile-page">
     <header>
       <router-link to="/home">
-        <img class="go-back" :src="goBackImg" />
+        <img class="go-back" :src="goBackImg" alt="Go Back" />
       </router-link>
       <div class="image-container">
-        <img class="profile-image" :src="user.image" alt="Profile-Image" />
-        <img class="choose-button" :src="chooseImage" />
+        <img class="profile-image" :src="user.image" alt="Profile Image" />
+        <img class="choose-button" :src="chooseImage" alt="Choose Image" />
       </div>
       <div class="name">{{ user.name }}</div>
     </header>
@@ -36,6 +36,7 @@ import goBackImg from "../assets/images/goback.svg";
 import chooseImage from "../assets/images/chooseImage.svg";
 import CustomInputProfile from "../components/CustomInputProfile.vue";
 
+// User data
 const user = ref({
   name: "Varun",
   image: avatar,
@@ -43,6 +44,7 @@ const user = ref({
   phone: "+66 0123456789",
 });
 
+// Handle form submission
 const handleSubmit = () => {
   console.log("Submitted user data:", user.value);
 };
@@ -90,6 +92,8 @@ header .image-container .choose-button {
 header .name {
   font-size: 15px;
   font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
 }
 
 form {
@@ -108,5 +112,11 @@ form button {
   font-size: 18px;
   font-weight: 700;
   margin-top: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #7a3bcc;
 }
 </style>

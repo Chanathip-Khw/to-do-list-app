@@ -18,7 +18,7 @@
       />
     </section>
     <section class="tasks">
-      <div class="today-task">Todays Tasks</div>
+      <div class="today-task">Today's Tasks</div>
       <div class="task-card-container">
         <TaskCard v-for="task in tasks" :key="task.id" :task="task" />
       </div>
@@ -29,73 +29,65 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import avatar from "../assets/images/avatar.svg";
 import CategoryCard from "../components/CategoryCard.vue";
 import TaskCard from "../components/TaskCard.vue";
 
-export default {
-  name: "Home",
-  components: { CategoryCard, TaskCard },
-  setup() {
-    const user = ref({
-      name: "Varun",
-      image: avatar,
-    });
+// User data
+const user = ref({
+  name: "Varun",
+  image: avatar,
+});
 
-    const tasks = ref([
-      {
-        id: 1,
-        name: "Morning Jog",
-        category: "Dailytasks",
-        startTime: "07:00",
-        endTime: "08:00",
-      },
-      {
-        id: 2,
-        name: "Team Meeting",
-        category: "Work",
-        startTime: "09:00",
-        endTime: "10:00",
-      },
-      {
-        id: 3,
-        name: "Study React",
-        category: "Learning",
-        startTime: "13:00",
-        endTime: "15:00",
-      },
-      {
-        id: 4,
-        name: "Grocery Shopping",
-        category: "Groceries",
-        startTime: "17:00",
-        endTime: "18:00",
-      },
-    ]);
-
-    const router = useRouter();
-
-    const categoryCounts = computed(() => {
-      return tasks.value.reduce((acc: any, task: any) => {
-        acc[task.category] = (acc[task.category] || 0) + 1;
-        return acc;
-      }, {});
-    });
-
-    const navigateToCreate = () => {
-      router.push("/create");
-    };
-
-    return {
-      user,
-      tasks,
-      categoryCounts,
-      navigateToCreate,
-    };
+// Task data
+const tasks = ref([
+  {
+    id: 1,
+    name: "Morning Jog",
+    category: "Dailytasks",
+    startTime: "07:00",
+    endTime: "08:00",
   },
+  {
+    id: 2,
+    name: "Team Meeting",
+    category: "Work",
+    startTime: "09:00",
+    endTime: "10:00",
+  },
+  {
+    id: 3,
+    name: "Study React",
+    category: "Learning",
+    startTime: "13:00",
+    endTime: "15:00",
+  },
+  {
+    id: 4,
+    name: "Grocery Shopping",
+    category: "Groceries",
+    startTime: "17:00",
+    endTime: "18:00",
+  },
+]);
+
+// Router
+const router = useRouter();
+
+// Computed property for category counts
+const categoryCounts = computed(() => {
+  return tasks.value.reduce((acc: Record<string, number>, task) => {
+    acc[task.category] = (acc[task.category] || 0) + 1;
+    return acc;
+  }, {});
+});
+
+// Navigation method
+const navigateToCreate = () => {
+  router.push("/create");
 };
 </script>
 

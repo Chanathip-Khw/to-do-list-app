@@ -5,34 +5,24 @@
       id="task-name"
       type="text"
       placeholder="Enter task name"
-      v-model="modelValue"
-      @input="updateTaskName"
+      :value="modelValue"
+      @input="(event) => emit('update:modelValue', event.target.value)"
     />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { defineProps, defineEmits } from "vue";
 
-export default defineComponent({
-  name: "TaskName",
-  props: {
-    modelValue: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(_, { emit }) {
-    const updateTaskName = (event: Event) => {
-      const input = event.target as HTMLInputElement;
-      emit("update:modelValue", input.value);
-    };
+// Define props
+const props = defineProps<{
+  modelValue: string;
+}>();
 
-    return {
-      updateTaskName,
-    };
-  },
-});
+// Define emits
+const emit = defineEmits<{
+  (event: "update:modelValue", value: string): void;
+}>();
 </script>
 
 <style scoped>
@@ -49,10 +39,16 @@ export default defineComponent({
 }
 
 input {
-  border: 1px solid grey;
+  border: 1px solid #ccc;
   border-radius: 8px;
   padding: 8px 15px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
+  transition: border-color 0.2s ease-in-out;
+}
+
+input:focus {
+  border-color: #9747ff;
+  outline: none;
 }
 </style>

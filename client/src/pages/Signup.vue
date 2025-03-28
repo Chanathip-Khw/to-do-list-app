@@ -6,7 +6,7 @@
     </header>
     <section class="signup">
       <div class="topic">Signup</div>
-      <img :src="avatar" alt="avatar" />
+      <img :src="avatar" alt="Avatar" />
       <CustomInputAuthen
         placeholder="username"
         type="text"
@@ -23,43 +23,47 @@
         type="password"
         v-model="confirmPassword"
       />
-      <button class="signup-button">Sign up</button>
+      <button class="signup-button" @click="handleSignup">Sign up</button>
       <button class="google-signin">
-        <img :src="google" alt="Google"/>
+        <img :src="google" alt="Google" />
         <div>Sign in with Google</div>
       </button>
       <div class="login">
-        <div>Already have any account?</div>
+        <div>Already have an account?</div>
         <a href="/login">Log in</a>
       </div>
     </section>
     <footer>
-      Join our new beta program to test our new experimantal feature
+      Join our new beta program to test our new experimental features
     </footer>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { ref } from "vue";
 import logo from "../assets/images/logo.svg";
 import avatar from "../assets/images/avatar.svg";
 import google from "../assets/images/google.svg";
 import CustomInputAuthen from "../components/CustomInputAuthen.vue";
-import { defineComponent, ref } from "vue";
 
-export default defineComponent({
-  name: "Signup",
-  components: { CustomInputAuthen },
-  data() {
-    return { logo, avatar, google };
-  },
-  setup() {
-    const username = ref("");
-    const password = ref("");
-    const email = ref("");
-    const confirmPassword = ref("");
-    return { username, password, email, confirmPassword };
-  },
-});
+// State
+const username = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+
+// Methods
+const handleSignup = () => {
+  if (password.value !== confirmPassword.value) {
+    alert("Passwords do not match!");
+    return;
+  }
+  console.log("User signed up with:", {
+    username: username.value,
+    email: email.value,
+    password: password.value,
+  });
+};
 </script>
 
 <style scoped>
@@ -114,6 +118,8 @@ section .signup-button {
   color: white;
   font-size: 14px;
   height: 45px;
+  border: none;
+  cursor: pointer;
 }
 
 section .signup-button:hover {
@@ -127,6 +133,7 @@ section .google-signin {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 section .google-signin img {

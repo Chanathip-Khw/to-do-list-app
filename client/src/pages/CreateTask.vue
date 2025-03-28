@@ -2,93 +2,102 @@
   <div class="create-page">
     <header>
       <router-link to="/home">
-        <img class="go-back" src="../assets/images/arrowback.svg" />
+        <img class="go-back" src="../assets/images/arrowback.svg" alt="Go Back" />
       </router-link>
       <div>Create a new task</div>
-      <img class="menu" src="../assets/images/menu.svg" />
+      <img class="menu" src="../assets/images/menu.svg" alt="Menu" />
     </header>
-    <form class="task-detail" @submit="createTask">
+    <form class="task-detail" @submit.prevent="createTask">
+      <!-- Task Name -->
       <TaskName v-model="taskName" />
+
+      <!-- Category Selector -->
       <CategorySelector
         :categories="categories"
         :selectedCategory="selectedCategory"
         @update:selectedCategory="handleSelectCategory"
       />
+
+      <!-- Date Selector -->
       <DateSelector v-model="date" />
+
+      <!-- Time Selectors -->
       <div class="time">
         <TimeSelector v-model="startTime" label="Start Time" />
         <TimeSelector v-model="endTime" label="End Time" />
       </div>
+
+      <!-- Priority Selector -->
       <PrioritySelector
         :priorities="priorities"
         :selectedPriority="selectedPriority"
         @update:selectedPriority="handleSelectPriority"
       />
+
+      <!-- Description Box -->
       <DescriptionBox v-model="description" />
+
+      <!-- Submit Button -->
       <button class="create-button" type="submit">Create Task</button>
     </form>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import TaskName from "../components/create/TaskName.vue";
 import CategorySelector from "../components/create/CategorySelector.vue";
 import DateSelector from "../components/create/DateSelector.vue";
 import TimeSelector from "../components/create/TimeSelector.vue";
-import PrioritySelector from "../components/create/PrioritySelector.vue"; // Import the new PrioritySelector component
+import PrioritySelector from "../components/create/PrioritySelector.vue";
 import DescriptionBox from "../components/create/DescriptionBox.vue";
 
-export default {
-  name: "CreateTask",
-  components: {
-    TaskName,
-    CategorySelector,
-    DateSelector,
-    TimeSelector,
-    PrioritySelector,
-    DescriptionBox,
-  },
-  setup() {
-    const taskName = ref("");
-    const categories = ref(["Dailytasks", "Work", "Learning", "Groceries"]);
-    const selectedCategory = ref<string | null>(null);
-    const date = ref("");
-    const startTime = ref("");
-    const endTime = ref("");
-    const priorities = ref(["Low", "Medium", "High"]);
-    const selectedPriority = ref<string | null>(null);
-    const description = ref("");
-    const router = useRouter();
+// Form fields
+const taskName = ref<string>("");
+const categories = ref<string[]>(["Dailytasks", "Work", "Learning", "Groceries"]);
+const selectedCategory = ref<string | null>(null);
+const date = ref<string>("");
+const startTime = ref<string>("");
+const endTime = ref<string>("");
+const priorities = ref<string[]>(["Low", "Medium", "High"]);
+const selectedPriority = ref<string | null>(null);
+const description = ref<string>("");
 
-    const handleSelectCategory = (category: string) => {
-      selectedCategory.value = category;
-    };
+// Router instance
+const router = useRouter();
 
-    const handleSelectPriority = (priority: string) => {
-      selectedPriority.value = priority;
-    };
+// Handle category selection
+const handleSelectCategory = (category: string) => {
+  selectedCategory.value = category;
+};
 
-    const createTask = () => {
-      router.push("/home");
-    };
+// Handle priority selection
+const handleSelectPriority = (priority: string) => {
+  selectedPriority.value = priority;
+};
 
-    return {
-      taskName,
-      categories,
-      selectedCategory,
-      handleSelectCategory,
-      date,
-      startTime,
-      endTime,
-      priorities,
-      selectedPriority,
-      handleSelectPriority,
-      description,
-      createTask,
-    };
-  },
+// Create task
+const createTask = () => {
+  // Validate required fields
+  if (!taskName.value || !selectedCategory.value || !date.value || !startTime.value || !endTime.value) {
+    alert("Please fill in all required fields before creating the task.");
+    return;
+  }
+
+  // Simulate task creation (replace with API call if needed)
+  console.log("Task Created:", {
+    taskName: taskName.value,
+    category: selectedCategory.value,
+    date: date.value,
+    startTime: startTime.value,
+    endTime: endTime.value,
+    priority: selectedPriority.value,
+    description: description.value,
+  });
+
+  // Redirect to home page
+  router.push("/home");
 };
 </script>
 
@@ -100,10 +109,12 @@ export default {
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 header div {
   font-weight: 700;
+  font-size: 18px;
 }
 
 form {
@@ -122,5 +133,14 @@ form .create-button {
   background-color: #9747ff;
   color: white;
   border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+form .create-button:hover {
+  background-color: #7a3bcc;
 }
 </style>

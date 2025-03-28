@@ -3,9 +3,7 @@
     <input type="checkbox" v-model="isComplete" class="complete-checkbox" />
     <div class="task-info">
       <div class="task-name">{{ task.name }}</div>
-      <div class="task-time">
-        {{ task.startTime }} AM - {{ task.endTime }} AM
-      </div>
+      <div class="task-time">{{ task.startTime }} - {{ task.endTime }}</div>
     </div>
     <div class="task-actions">
       <button class="edit-button" @click="navigateToEdit">
@@ -18,37 +16,32 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import editImg from "../assets/images/edit.svg";
 import deleteImg from "../assets/images/delete.svg";
-import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
 
-export default defineComponent({
-  name: "TaskCard",
-  data() {
-    return {
-      editImg,
-      deleteImg,
-    };
-  },
-  props: {
-    task: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props) {
-    const isComplete = ref(false);
-    const router = useRouter();
+// Props
+const props = defineProps<{
+  task: {
+    id: string;
+    name: string;
+    startTime: string;
+    endTime: string;
+  };
+}>();
 
-    const navigateToEdit = () => {
-      router.push(`/edit/${props.task.id}`);
-    };
+// State
+const isComplete = ref(false);
 
-    return { isComplete, navigateToEdit};
-  },
-});
+// Router
+const router = useRouter();
+
+// Methods
+const navigateToEdit = () => {
+  router.push(`/edit/${props.task.id}`);
+};
 </script>
 
 <style scoped>

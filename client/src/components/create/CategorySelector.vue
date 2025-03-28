@@ -1,12 +1,14 @@
 <template>
   <div class="category-selector">
-    <div style="text-align:left">Category</div>
+    <label class="category-label">Category</label>
     <div class="category-button-container">
       <button
+        type="button"
         v-for="category in categories"
         :key="category"
         :class="{ selected: selectedCategory === category }"
         @click="handleSelectCategory(category)"
+        :aria-pressed="selectedCategory === category"
       >
         {{ category }}
       </button>
@@ -14,61 +16,63 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { defineProps, defineEmits } from "vue";
 
-export default defineComponent({
-  name: "CategorySelector",
-  props: {
-    categories: {
-      type: Array as PropType<string[]>,
-      required: true,
-    },
-    selectedCategory: {
-      type: String as PropType<string | null>,
-      default: null,
-    },
-  },
-  emits: ["update:selectedCategory"],
-  setup(_, { emit }) {
-    const handleSelectCategory = (category: string) => {
-      emit("update:selectedCategory", category);
-    };
+// Define props
+const props = defineProps<{
+  categories: string[];
+  selectedCategory?: string | null;
+}>();
 
-    return {
-      handleSelectCategory,
-    };
-  },
-});
+// Define emits
+const emit = defineEmits<{
+  (event: "update:selectedCategory", category: string): void;
+}>();
+
+// Function to handle category selection
+const handleSelectCategory = (category: string) => {
+  if (props.selectedCategory !== category) {
+    emit("update:selectedCategory", category);
+  }
+};
 </script>
 
 <style scoped>
 .category-selector {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
-.category-selector div {
+.category-label {
   font-size: 14px;
   font-weight: 700;
+  text-align: left;
+  display: block;
 }
 
 .category-button-container {
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 8px;
 }
 
 .category-button-container button {
   background-color: rgba(151, 71, 255, 0.3);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 10px 30px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
 }
 
 .category-button-container button.selected {
   background-color: #9747ff;
   color: white;
-  border: none;
+}
+
+.category-button-container button:hover {
+  background-color: rgba(151, 71, 255, 0.5);
 }
 </style>

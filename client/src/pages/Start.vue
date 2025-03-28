@@ -12,22 +12,12 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import logo from "../assets/images/logo.svg";
 import arrow from "../assets/images/arrow.svg";
-export default {
-  name: "Home",
-  data() {
-    return {
-      logo,
-      arrow,
-    };
-  },
-};
 </script>
 
 <style scoped>
-
 .home-container {
   background-image: url("../assets/images/background.svg");
   background-size: cover;
@@ -54,6 +44,7 @@ export default {
   font-weight: 200;
   font-style: italic;
   width: 70%;
+  text-align: center;
 }
 
 .get-start-button {
@@ -63,12 +54,17 @@ export default {
   border: 1px solid #757575;
   border-radius: 10px;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.15) 
+  background-color: rgba(255, 255, 255, 0.15);
+  text-decoration: none;
 }
 
 .get-start-button div {
   font-size: 13px;
   color: black;
-  font: bold;
+  font-weight: bold;
+}
+
+.get-start-button img {
+  width: 15px;
 }
 </style>
