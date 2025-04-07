@@ -1,36 +1,44 @@
 <template>
   <div class="input-container">
-    <slot name="input-slot">
-      <input
-        v-bind="$attrs"
-        :type="type"
-        :value="modelValue"
-        @input="updateValue"
-        :placeholder="placeholder"
-      />
-    </slot>
+    <input
+      v-bind="$attrs"
+      :type="type"
+      :value="modelValue"
+      @input="updateValue"
+      :placeholder="placeholder"
+    />
   </div>
 </template>
 
-<script lang="ts" setup>
-import { defineProps, defineEmits } from "vue";
+<script setup lang="ts">
+import { useAttrs, defineProps, defineEmits } from 'vue';
 
-// Props
-defineProps<{
-  modelValue: string | number;
-  type?: string;
-  placeholder?: string;
-}>();
+// Define props using `defineProps`
+const props = defineProps({
+  modelValue: {
+    type: [String, Number],
+    required: true,
+  },
+  type: {
+    type: String,
+    default: 'text',
+  },
+  placeholder: {
+    type: String,
+    default: '',
+  },
+});
 
-// Emits
-const emit = defineEmits<{
-  (e: "update:modelValue", value: string | number): void;
-}>();
+// Define emits using `defineEmits`
+const emit = defineEmits(['update:modelValue']);
 
-// Update input value
+// Access fallthrough attributes
+const attrs = useAttrs();
+
+// Update value on input event
 const updateValue = (event: Event) => {
   const value = (event.target as HTMLInputElement).value;
-  emit("update:modelValue", value);
+  emit('update:modelValue', value);
 };
 </script>
 
